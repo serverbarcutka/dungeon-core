@@ -114,8 +114,8 @@ const QS=[{t:'Убей 15 героев',k:'k',n:15,r:3},{t:'Отбей 3 рей�
 function qinc(k){if(S.q.d!=td())S.q={d:td(),k:0,w:0,s:0,c:[0,0,0]};S.q[k]++}
 const qcard=()=>{if(S.q.d!=td())S.q={d:td(),k:0,w:0,s:0,c:[0,0,0]};return`<div class=c><b>📜 Задания дня</b>${QS.map((q,i)=>{const v=Math.min(S.q[q.k],q.n),dn=S.q.c[i];return`<div class=r style="margin:4px 0"><span>${q.t} <span class=mu>${v}/${q.n} · +${q.r}💠</span></span><button class=sb data-a=qc data-i=${i} ${dn||v<q.n?'disabled':''}>${dn?'✓':'Забрать'}</button></div>`}).join('')}</div>`};
 const SN=[['s','⚔️ Сила','монстры бьют сильнее'],['v','❤️ Живучесть','здоровье монстров'],['r','🔮 Разум','сила заклинаний'],['a','💰 Алчность','доход']];
-const SL=['⚔️ Скипетр','🛡️ Доспех ядра','💍 Кольцо','📿 Амулет'],SB=[5,6,5,6],SD=['урон монстров','здоровье монстров','доход','сила заклинаний'],RN=['Обычный','Редкий','Эпический','Легендарный'],RC=['#9e9e9e','#4fc3f7','#b388ff','#ffb300'];
-const bonus=it=>Math.round(SB[it.t]*(1+.7*it.r)*(1+.12*it.l)*(1+.05*it.e)*10)/10,G=t=>S.eq[t]?bonus(S.eq[t]):0;
+const SL=['⚔️ Скипетр','🛡️ Доспех ядра','💍 Кольцо','📿 Амулет'],SBA=[5,6,5,6],SD=['урон монстров','здоровье монстров','доход','сила заклинаний'],RN=['Обычный','Редкий','Эпический','Легендарный'],RC=['#9e9e9e','#4fc3f7','#b388ff','#ffb300'];
+const bonus=it=>Math.round(SBA[it.t]*(1+.7*it.r)*(1+.12*it.l)*(1+.05*it.e)*10)/10,G=t=>S.eq[t]?bonus(S.eq[t]):0;
 const PW=k=>[1+.04*S.st.s+G(0)/100,1+.04*S.st.v+G(1)/100,1+.04*S.st.a+G(2)/100,1+.05*S.st.r+G(3)/100][k]*SETB();
 const xpn=()=>Math.floor(20*Math.pow(S.lv,1.6)),val=it=>Math.floor(15*(1+it.r*1.5)*(1+it.l*.2)),ec=it=>Math.floor(40*(it.r+1)*Math.pow(1.5,it.e));
 const pw=()=>Math.floor(S.fl.flat().filter(Boolean).reduce((a,m)=>a+mhp(m)*mat(m)/6,0)+S.lv*40+S.eq.reduce((a,i)=>a+(i?bonus(i)*12:0),0));
