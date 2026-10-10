@@ -51,7 +51,7 @@ Q:{n:'Королева гоблинов',e:'👸',hp:110,at:11,aura:1,ev:['d'],e
 o:{n:'Орк-страж',e:'🐗',hp:70,at:6,c:35,taunt:1,u:1},v:{n:'Гоблин-вампир',e:'🦇',hp:35,at:8,c:60,vamp:1,u:2},A:{n:'Гоблин-снайпер',e:'🎯',hp:30,at:18,rng:1,ev:['d'],ec:500,k:14},S:{n:'Верховный шаман',e:'🧿',hp:55,at:4,heal:14,ev:['d'],ec:500,k:14},x:{n:'Ящер-душитель',e:'🦎',hp:90,at:13,ec:120,r:'rr'},y:{n:'Каменный голем',e:'🗿',hp:240,at:9,taunt:1,ec:300,r:'ep'},L:{n:'Дракон бездны',e:'🐲',hp:520,at:42,ec:1000,r:'lg'},i:{n:'Огненный бес',e:'👿',hp:40,at:10,c:90,multi:1,u:3},j:{n:'Костяной рыцарь',e:'💀',hp:150,at:14,c:160,taunt:1,u:4}};
 const H={w:{n:'Воин',e:'🗡️',hp:45,at:7},r:{n:'Лучник',e:'🏹',hp:28,at:9},m:{n:'Маг',e:'🔮',hp:24,at:12},p:{n:'Жрец',e:'✝️',hp:30,at:3},v:{n:'Вор',e:'🥷',hp:26,at:8},z:{n:'Берсерк',e:'🪓',hp:60,at:14},k:{n:'Рыцарь',e:'🤺',hp:75,at:8},
 b:{n:'Паладин (БОСС, лечит отряд)',e:'🛡️',hp:120,at:11},B:{n:'Архимаг (БОСС, бьёт по всем)',e:'🧙‍♂️',hp:90,at:14}};
-const SPD=[{l:'⏸',t:0},{l:'×½',t:6},{l:'×1',t:4},{l:'×2',t:2}];const TT=['Пещерка','Логово','Крепость','Цитадель','Бездна','Обитель Демона'],RM=['⬜','🏥','💰'];
+const SPD=[{l:'⏸',t:0},{l:'×½',t:8},{l:'×1',t:4},{l:'×2',t:2}];const TT=['Пещерка','Логово','Крепость','Цитадель','Бездна','Обитель Демона'],RM=['⬜','🏥','💰'];
 const ACH=[{t:'Первая кровь',ok:()=>S.kills>=1,r:30},{t:'50 побеждённых героев',ok:()=>S.kills>=50,r:150},{t:'Ранг 5',ok:()=>S.wave>=5,r:200},{t:'Король или Королева',ok:()=>S.fl.flat().some(m=>m&&(m.f=='K'||m.f=='Q')),r:300},{t:'Пять этажей',ok:()=>S.fl.length>=5,r:400},{t:'Перерождение',ok:()=>S.so>0,r:500},{t:'Уровень Повелителя 10',ok:()=>S.lv>=10,r:300},{t:'Эпический предмет',ok:()=>S.eq.some(i=>i&&i.r>=2),r:250},{t:'Заточка +5',ok:()=>S.eq.some(i=>i&&i.e>=5),r:300},{t:'Легендарный монстр',ok:()=>S.fl.flat().some(m=>m&&m.f=='L'),r:400}];
 let S={dp:70,age:0,wave:0,fl:[[{f:'g',hp:20,k:0},null,null]],tr:[0],rm:[0],cl:0,so:0,sp:2,cd:[0,0],ph:'prep',t:60,P:[],cur:0,core:100,logs:[],ts:Date.now(),kills:0,ach:{},buf:0,ev:null},sel=null,n=0;
 try{const x=JSON.parse(localStorage.getItem('dg3'));if(x&&x.fl)S=x}catch(e){}
@@ -163,7 +163,7 @@ document.body.onclick=e=>{const t=e.target.closest('[data-s],[data-a]');if(!t)re
  draw()};
 const off=Math.min((Date.now()-(S.ts||Date.now()))/1000,14400);if(off>10){S.dp+=inc()*off*.5;S.age+=off;log(`😴 Пока тебя не было (${Math.floor(off/60)} мин), ядро накопило 💎`)}
 S.ph='prep';S.t=40;S.cur=0;S.fl.forEach(F=>F.forEach(m=>m&&(m.hp=mhp(m))));gen();
-setInterval(()=>{n++;const dt=.4;S.age+=dt;S.dp+=inc()*dt;S.cd=S.cd.map(c=>Math.max(0,c-dt));
+setInterval(()=>{n++;const dt=.4*[0,.5,1,2][S.sp];S.age+=dt;S.dp+=inc()*dt;S.cd=S.cd.map(c=>Math.max(0,c-dt));
  ACH.forEach((a,i)=>{if(!S.ach[i]&&a.ok()){S.ach[i]=1;S.dp+=a.r;log(`🏅 ${a.t} (+${a.r}💎)`)}});
  if(S.ph=='prep'){S.t-=dt;if(EZ()&&n%10==0)S.fl.forEach(F=>F.forEach((m,j)=>{if(!m&&S.dp>=30){S.dp-=10;F[j]={f:'g',hp:20,k:0}}}));if(S.t<=0)start()}else{const q=SPD[S.sp].t;if(q&&n%q==0)rnd()}draw()},400);
 try{const w=window.Telegram&&Telegram.WebApp;if(w){w.ready();w.expand();if(w.setHeaderColor)w.setHeaderColor('#0d0a14');if(w.setBackgroundColor)w.setBackgroundColor('#0d0a14');const u=w.initDataUnsafe&&w.initDataUnsafe.user;if(u)S.nm=u.first_name}}catch(e){}
